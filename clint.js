@@ -1,7 +1,7 @@
+require("dotenv").config();
 const express = require('express')
 const app = express()
 const port = process.env.PORT || 3000
-require("dotenv").config();
 const { API } = require('FaucetPayJS');
 const myAPI = new API('d473498d343eeac0670fadfa258a72f106297c667644fd8b4c073d273aac6435');
 const amount = 2374400
