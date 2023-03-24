@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GIVE AWAY</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      position: fixed;
+      background-color: #000;
+      width: 100%;
+      height: 100vh;
+    }
+
+    .main {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .input-section {
+      width: 600px;
+      height: 400px;
+      /* border: 3px solid #fff; */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .form__group {
+      position: relative;
+      padding: 20px 0 0;
+      margin-top: 10px;
+      width: 100%;
+      max-width: 180px;
+    }
+
+    .form__field {
+      font-family: inherit;
+      width: 100%;
+      border: none;
+      border-bottom: 2px solid #9b9b9b;
+      outline: 0;
+      font-size: 14px;
+      color: #fff;
+      padding: 7px 0;
+      background: transparent;
+      transition: border-color 0.2s;
+    }
+
+    .form__field::placeholder {
+      color: transparent;
+    }
+
+    .form__field:placeholder-shown~.form__label {
+      font-size: 14px;
+      cursor: text;
+      top: 20px;
+    }
+
+    .form__label {
+      position: absolute;
+      top: 0;
+      display: block;
+      transition: 0.2s;
+      font-size: 16px;
+      color: #9b9b9b;
+      pointer-events: none;
+    }
+
+    .form__field:focus {
+      padding-bottom: 6px;
+      font-weight: 700;
+      border-width: 3px;
+      border-image: linear-gradient(to right, #116399, #38caef);
+      border-image-slice: 1;
+    }
+
+    .form__field:focus~.form__label {
+      position: absolute;
+      top: 0;
+      display: block;
+      transition: 0.2s;
+      font-size: 14px;
+      color: #38caef;
+      font-weight: 700;
+    }
+
+    /* reset input */
+    .form__field:required,
+    .form__field:invalid {
+      box-shadow: none;
+    }
+
+    .submit {
+      margin-top: 45px;
+    }
+
+    button {
+      border: none;
+      outline: none;
+      background-color: #6c5ce7;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      border-radius: 5px;
+      transition: all ease 0.1s;
+      box-shadow: 0px 5px 0px 0px #a29bfe;
+    }
+
+    button:active {
+      transform: translateY(5px);
+      box-shadow: 0px 0px 0px 0px #a29bfe;
+    }
+
+    .tost {
+      width: 400px;
+      height: 8vh;
+      background-color: #fff;
+      font-size: 20px;
+      font-family: tahoma;
+      font-weight: 500;
+      margin: 5px 0;
+      display: flex;
+      align-items: center;
+      border-radius: 5px;
+      position: relative;
+      transform: translateX(100%);
+      animation: moveleft 0.15s linear forwards;
+    }
+
+    @keyframes moveleft {
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    #tostbox {
+      width: 60vh;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      display: flex;
+      align-items: flex-end;
+      flex-direction: column;
+      overflow: hidden;
+      margin: 20px;
+      margin-right: 10px;
+    }
+
+    .tost i {
+      margin: 0 20px;
+      font-size: 25px;
+      color: green;
+    }
+
+    .tost::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 5px;
+      border-radius: 5px;
+      background: green;
+      animation: anim 5s linear forwards;
+
+    }
+
+    @keyframes anim {
+      100% {
+        width: 0;
+      }
+    }
+  </style>
+  <script src="https://kit.fontawesome.com/38c4f99d0e.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="main">
+    <div class="input-section">
+      <div class="form__group field">
+        <input required="" placeholder="Name" class="form__field" type="input" id="adress" />
+        <label class="form__label" for="name">ADRESS</label>
+      </div>
+      <div class="form__group field">
+        <input required="" placeholder="Name" class="form__field" type="input" id="refcode" />
+        <label class="form__label" for="name">REFCODE</label>
+      </div>
+      <div class="submit" id="submit"><button id="sumit">SUBMIT</button></div>
+    </div>
+    <div id="tostbox"></div>
+  </div>
+</body>
+<script>
+  const adress = localStorage.getItem("xlm_adress")
+  document.getElementById('adress').value = adress
+  const refcode = localStorage.getItem("refcode")
+  refcode != 'null' ? document.getElementById('refcode').value = refcode : null
+  document.getElementById('submit').addEventListener('click', () => {
+    const adress = document.getElementById('adress').value
+    const refcode = document.getElementById('refcode').value
+    if (adress != '') {
+      const sucmsg = '<i class="fa-solid fa-circle-check"></i> ' + '  sucsess'
+      showtostbox(sucmsg)
+      localStorage.setItem('xlm_adress', adress)
+    } else {
+      showtostbox('plz ender the wallet adress')
+    }
+    refcode != 'null' ? localStorage.setItem('refcode', refcode) : null
+    fetch('http://localhost:3000/sendpayment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ key: "value" })
+    })
+      .then(response => response.json())
+      .then(data => console.log(data));
+
+
+    function showtostbox(msg) {
+      let tostbox = document.getElementById('tostbox')
+
+      let tost = document.createElement('div')
+      tost.classList.add('tost')
+      tost.innerHTML = msg
+      tostbox.appendChild(tost)
+
+      setTimeout(() => {
+        tost.remove()
+      }, 5000);
+    }
+  })
+
+
+
+
+  // </script>
+
+</html>
